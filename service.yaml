@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stratedge
+  namespace: stratedge
+  labels:
+    app: stratedge
+spec:
+  type: ClusterIP
+  selector:
+    app: stratedge
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+      protocol: TCP

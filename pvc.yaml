@@ -1,0 +1,32 @@
+# ─── PersistentVolumeClaim for cache storage ─────────────────
+# You must create a matching PersistentVolume first.
+# Example hostPath PV (create separately on your cluster):
+#
+#   apiVersion: v1
+#   kind: PersistentVolume
+#   metadata:
+#     name: stratedge-cache-pv
+#   spec:
+#     capacity:
+#       storage: 5Gi
+#     accessModes:
+#       - ReadWriteOnce
+#     persistentVolumeReclaimPolicy: Retain
+#     hostPath:
+#       path: /data/stratedge-cache   # exists on your node
+#     storageClassName: manual
+#
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: stratedge-cache-pvc
+  namespace: stratedge
+  labels:
+    app: stratedge
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: manual   # must match the PV's storageClassName

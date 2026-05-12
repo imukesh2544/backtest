@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stratedge
+  namespace: stratedge
+  labels:
+    app: stratedge
+    version: "1.0"
+spec:
+  replicas: 1           # Keep at 1 — cache PVC is ReadWriteOnce
+  selector:
+    matchLabels:
+      app: stratedge
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: stratedge
+        version: "1.0"
+      annotations:
+        # Forces pod restart when ConfigMap changes
+        checksum/config: "placeholder-updated-by-jenkins"
+    spec:
+      containers:
+        - name: stratedge
+          # IMAGE is replaced by Jenkins during deploy:
+          #   kubectl set image deployment/stratedge stratedge=<registry>/stratedge:<tag>
+          image: stratedge:latest
+          imagePullPolicy: IfNotPresent    # Use Always if pulling from a registry
+
+          ports:
+            - containerPort: 5000
+              name: http
+              protocol: TCP
+
+          env:
+            - name: PORT
+              value: "5000"
+            - name: CACHE_DIR
+              value: "/data/cache"
+            - name: STOCKS_FILE
+              value: "/app/stocks.json"
+            - name: CACHE_TTL_HOURS
+              value: "6"
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: WORKERS
+              value: "2"
+
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            failureThreshold: 3
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+
+          volumeMounts:
+            - name: cache-storage
+              mountPath: /data/cache
+
+      volumes:
+        - name: cache-storage
+          persistentVolumeClaim:
+            claimName: stratedge-cache-pvc
+
+      restartPolicy: Always

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: stratedge
+  labels:
+    app.kubernetes.io/name: stratedge
+    app.kubernetes.io/managed-by: jenkins
