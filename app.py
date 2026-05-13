@@ -2,10 +2,12 @@
 StratEdge — Universal Backtesting Backend
 Flask API server with yfinance data fetching, disk caching,
 indicator calculation, and full backtest engine.
+
+FIX v1.1: /api/backtest now returns `bars` array required by frontend chart.
 """
 
 import os, json, time, hashlib, logging
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -14,35 +16,31 @@ import yfinance as yf
 from flask import Flask, request, jsonify, render_template
 from flask_cors import CORS
 
-# ─── CONFIG ──────────────────────────────────────────────────────────────────
+# ── CONFIG ────────────────────────────────────────────────────
 CACHE_DIR   = Path(os.environ.get("CACHE_DIR", "./cache"))
 STOCKS_FILE = Path(os.environ.get("STOCKS_FILE", "./stocks.json"))
-CACHE_TTL   = int(os.environ.get("CACHE_TTL_HOURS", "6")) * 3600   # 6h default
+CACHE_TTL   = int(os.environ.get("CACHE_TTL_HOURS", "6")) * 3600
 LOG_LEVEL   = os.environ.get("LOG_LEVEL", "INFO")
 
 CACHE_DIR.mkdir(parents=True, exist_ok=True)
 
-logging.basicConfig(
-    level=getattr(logging, LOG_LEVEL),
-    format="%(asctime)s [%(levelname)s] %(message)s"
-)
+logging.basicConfig(level=getattr(logging, LOG_LEVEL),
+                    format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("stratedge")
 
 app = Flask(__name__, template_folder="templates")
 CORS(app)
 
-# ─── INTERVAL MAPPING ────────────────────────────────────────────────────────
-# Maps UI label → (yfinance interval, yfinance period)
 INTERVAL_MAP = {
     "1d":  ("1d",  "10y"),
     "1wk": ("1wk", "10y"),
     "1mo": ("1mo", "10y"),
-    "60m": ("60m", "60d"),    # Yahoo only allows ~60 days for intraday
+    "60m": ("60m", "60d"),
     "15m": ("15m", "60d"),
     "5m":  ("5m",  "60d"),
 }
 
-# ─── LOAD STOCK UNIVERSE ─────────────────────────────────────────────────────
+# ── STOCK UNIVERSE ────────────────────────────────────────────
 def load_stocks():
     if STOCKS_FILE.exists():
         with open(STOCKS_FILE) as f:
@@ -51,25 +49,17 @@ def load_stocks():
     return []
 
 STOCKS = load_stocks()
-# Build search index: [(name_lower, symbol_lower, entry), ...]
-SEARCH_INDEX = [
-    (s["name"].lower(), s["symbol"].lower(), s)
-    for s in STOCKS
-]
+SEARCH_INDEX = [(s["name"].lower(), s["symbol"].lower(), s) for s in STOCKS]
 
-# ─── DISK CACHE ──────────────────────────────────────────────────────────────
-def _cache_path(symbol: str, interval: str) -> Path:
+# ── DISK CACHE ────────────────────────────────────────────────
+def _cache_path(symbol, interval):
     key = hashlib.md5(f"{symbol}:{interval}".encode()).hexdigest()
     return CACHE_DIR / f"{key}.json"
 
+def _cache_valid(path):
+    return path.exists() and (time.time() - path.stat().st_mtime) < CACHE_TTL
 
-def _cache_valid(path: Path) -> bool:
-    if not path.exists():
-        return False
-    return (time.time() - path.stat().st_mtime) < CACHE_TTL
-
-
-def cache_read(symbol: str, interval: str):
+def cache_read(symbol, interval):
     p = _cache_path(symbol, interval)
     if _cache_valid(p):
         try:
@@ -79,8 +69,7 @@ def cache_read(symbol: str, interval: str):
             pass
     return None
 
-
-def cache_write(symbol: str, interval: str, data: dict):
+def cache_write(symbol, interval, data):
     p = _cache_path(symbol, interval)
     try:
         with open(p, "w") as f:
@@ -88,38 +77,29 @@ def cache_write(symbol: str, interval: str, data: dict):
     except Exception as e:
         log.warning(f"Cache write failed: {e}")
 
-
-def cache_bust(symbol: str, interval: str):
+def cache_bust(symbol, interval):
     p = _cache_path(symbol, interval)
     if p.exists():
         p.unlink()
 
-# ─── DATA FETCHING ───────────────────────────────────────────────────────────
-def fetch_ohlcv(symbol: str, interval: str) -> dict:
-    """
-    Fetch OHLCV data from Yahoo Finance.
-    Returns dict with keys: symbol, interval, bars (list of OHLCV dicts)
-    """
+# ── DATA FETCHING ─────────────────────────────────────────────
+def fetch_ohlcv(symbol, interval):
     yf_interval, yf_period = INTERVAL_MAP.get(interval, ("1d", "10y"))
-
     log.info(f"Fetching {symbol} interval={yf_interval} period={yf_period}")
     try:
         ticker = yf.Ticker(symbol)
         df = ticker.history(period=yf_period, interval=yf_interval, auto_adjust=True)
-
         if df is None or df.empty:
             raise ValueError(f"No data returned for {symbol}")
-
         df = df.dropna(subset=["Open", "High", "Low", "Close"])
-        df = df[~df.index.duplicated(keep="first")]
-        df = df.sort_index()
+        df = df[~df.index.duplicated(keep="first")].sort_index()
 
-        bars = []
+        seen, bars = set(), []
         for ts, row in df.iterrows():
-            if hasattr(ts, "date"):
-                t = ts.date().isoformat()
-            else:
-                t = str(ts)[:10]
+            t = ts.date().isoformat() if hasattr(ts, "date") else str(ts)[:10]
+            if t in seen:
+                continue
+            seen.add(t)
             bars.append({
                 "t": t,
                 "o": round(float(row["Open"]),  2),
@@ -129,28 +109,14 @@ def fetch_ohlcv(symbol: str, interval: str) -> dict:
                 "v": int(row.get("Volume", 0) or 0),
             })
 
-        # Deduplicate by date (keep first)
-        seen = set()
-        unique = []
-        for b in bars:
-            if b["t"] not in seen:
-                seen.add(b["t"])
-                unique.append(b)
-
-        return {
-            "symbol":   symbol,
-            "interval": interval,
-            "fetched":  datetime.utcnow().isoformat(),
-            "bars":     unique,
-        }
-
+        return {"symbol": symbol, "interval": interval,
+                "fetched": datetime.utcnow().isoformat(), "bars": bars}
     except Exception as e:
         log.error(f"fetch_ohlcv error for {symbol}: {e}")
         raise
 
-
-# ─── INDICATORS ──────────────────────────────────────────────────────────────
-def calc_ema(closes: list, period: int) -> list:
+# ── INDICATORS ────────────────────────────────────────────────
+def calc_ema(closes, period):
     k = 2 / (period + 1)
     result = [None] * len(closes)
     if len(closes) < period:
@@ -162,8 +128,7 @@ def calc_ema(closes: list, period: int) -> list:
         result[i] = round(ema, 2)
     return result
 
-
-def calc_rsi(closes: list, period: int = 14) -> list:
+def calc_rsi(closes, period=14):
     result = [None] * len(closes)
     if len(closes) <= period:
         return result
@@ -186,10 +151,7 @@ def calc_rsi(closes: list, period: int = 14) -> list:
         result[i] = round(100 - 100 / (1 + rs), 2)
     return result
 
-
-def add_indicators(bars: list, ema_period: int, rsi_period: int) -> list:
-    """Attach ema and rsi values to each bar dict (returns new list, doesn't mutate)."""
-    bars = [dict(b) for b in bars]   # shallow copy so we don't dirty the cache
+def add_indicators(bars, ema_period, rsi_period):
     closes = [b["c"] for b in bars]
     emas   = calc_ema(closes, ema_period)
     rsis   = calc_rsi(closes, rsi_period)
@@ -198,80 +160,51 @@ def add_indicators(bars: list, ema_period: int, rsi_period: int) -> list:
         b["rsi"] = rsis[i]
     return bars
 
-
-# ─── BACKTEST ENGINE ─────────────────────────────────────────────────────────
-def run_backtest(bars: list, params: dict) -> dict:
-    """
-    Full backtest engine.
-
-    params keys:
-      ema_period     int   (default 5)
-      rsi_period     int   (default 14)
-      rsi_threshold  float (default 30)
-      rr_ratio       float (default 3.0)
-      capital        float (default 100000)
-
-    Returns full result dict including annotated bars for the frontend chart.
-    """
+# ── BACKTEST ENGINE ───────────────────────────────────────────
+def run_backtest(bars, params):
     ema_period    = int(params.get("ema_period",    5))
     rsi_period    = int(params.get("rsi_period",    14))
     rsi_threshold = float(params.get("rsi_threshold", 30.0))
     rr_ratio      = float(params.get("rr_ratio",    3.0))
     capital_start = float(params.get("capital",     100000.0))
 
-    # Attach indicators (returns a new list — cache is untouched)
     bars = add_indicators(bars, ema_period, rsi_period)
 
     capital = capital_start
     state   = "IDLE"
     pending = None
     active  = None
-    trades  = []
-    signals = []
-    cancels = []
-    carry   = []
+    trades, signals, cancels = [], [], []
 
     for i, day in enumerate(bars):
         ema = day["ema"]
         rsi = day["rsi"]
 
-        # ── IDLE ─────────────────────────────────────────────────────────
         if state == "IDLE":
             if (ema is not None and rsi is not None
                     and day["h"] < ema and rsi < rsi_threshold):
                 state = "PENDING"
-                pending = {
-                    "signal_date": day["t"],
-                    "signal_high": day["h"],
-                    "signal_low":  day["l"],
-                    "signal_ema":  ema,
-                    "signal_rsi":  rsi,
-                    "signal_idx":  i,
-                }
-                signals.append({
-                    "date": day["t"], "type": "SIGNAL",
-                    "high": day["h"], "low": day["l"],
-                    "ema": ema, "rsi": rsi,
-                })
+                pending = {"signal_date": day["t"], "signal_high": day["h"],
+                           "signal_low": day["l"], "signal_ema": ema,
+                           "signal_rsi": rsi, "signal_idx": i}
+                signals.append({"date": day["t"], "type": "SIGNAL",
+                                 "high": day["h"], "low": day["l"],
+                                 "ema": ema, "rsi": rsi})
 
-        # ── PENDING ──────────────────────────────────────────────────────
         elif state == "PENDING":
             tH = pending["signal_high"]
             sl = pending["signal_low"]
 
             ep = None; et = ""
-            if day["o"] > tH:
-                ep = day["o"]; et = "GAP_UP"
-            elif day["h"] > tH:
-                ep = tH;       et = "NORMAL"
+            if day["o"] > tH:   ep = day["o"]; et = "GAP_UP"
+            elif day["h"] > tH: ep = tH;       et = "NORMAL"
 
             if ep is not None:
                 risk   = round(ep - sl, 2)
                 target = round(ep + rr_ratio * risk, 2)
                 shares = max(1, int(capital / ep))
-
                 active = {
-                    "id":          len(trades) + 1,
+                    "id": len(trades) + 1,
                     "signal_date": pending["signal_date"],
                     "signal_high": pending["signal_high"],
                     "signal_low":  pending["signal_low"],
@@ -282,61 +215,42 @@ def run_backtest(bars: list, params: dict) -> dict:
                     "entry_type":  et,
                     "entry_ema":   ema,
                     "entry_rsi":   rsi,
-                    "sl":          sl,
-                    "target":      target,
-                    "risk":        risk,
-                    "shares":      shares,
-                    "rr_ratio":    rr_ratio,
-                    "entry_idx":   i,
+                    "sl": sl, "target": target, "risk": risk,
+                    "shares": shares, "rr_ratio": rr_ratio,
                 }
-                pending = None
-                state   = "IN_TRADE"
+                pending = None; state = "IN_TRADE"
 
                 # Same-day exit check
-                exited = False
                 if day["l"] <= sl:
                     xp = day["o"] if (et == "GAP_UP" and day["o"] <= sl) else sl
                     pnl = round((xp - ep) * shares, 2)
                     capital = round(capital + pnl, 2)
-                    trades.append({**active,
-                        "exit_date": day["t"], "exit_price": xp,
-                        "exit_reason": "SL", "pnl": pnl,
-                        "capital_after": capital, "hold_days": 0,
-                    })
-                    state = "IDLE"; active = None; exited = True
-
+                    trades.append({**active, "exit_date": day["t"], "exit_price": xp,
+                                   "exit_reason": "SL", "pnl": pnl,
+                                   "capital_after": capital, "hold_days": 0})
+                    state = "IDLE"; active = None
                 elif day["h"] >= target:
                     xp = day["o"] if (et == "GAP_UP" and day["o"] >= target) else target
                     pnl = round((xp - ep) * shares, 2)
                     capital = round(capital + pnl, 2)
-                    trades.append({**active,
-                        "exit_date": day["t"], "exit_price": xp,
-                        "exit_reason": "TARGET", "pnl": pnl,
-                        "capital_after": capital, "hold_days": 0,
-                    })
-                    state = "IDLE"; active = None; exited = True
-
+                    trades.append({**active, "exit_date": day["t"], "exit_price": xp,
+                                   "exit_reason": "TARGET", "pnl": pnl,
+                                   "capital_after": capital, "hold_days": 0})
+                    state = "IDLE"; active = None
             else:
                 ema_ok = (ema is not None and day["h"] < ema)
                 rsi_ok = (rsi is not None and rsi < rsi_threshold)
-
                 if ema_ok and rsi_ok:
-                    carry.append({"date": day["t"], "signal": pending["signal_date"]})
+                    pass  # carry forward
                 else:
-                    reason = (
-                        f"EMA breach: H={day['h']} ≥ EMA={ema}"
-                        if not ema_ok
-                        else f"RSI={rsi} ≥ {rsi_threshold}"
-                    )
-                    cancels.append({
-                        "date": day["t"],
-                        "signal_date": pending["signal_date"],
-                        "reason": reason,
-                    })
+                    reason = (f"EMA breach: H={day['h']} ≥ EMA={ema}"
+                              if not ema_ok else f"RSI={rsi} ≥ {rsi_threshold}")
+                    cancels.append({"date": day["t"],
+                                    "signal_date": pending["signal_date"],
+                                    "reason": reason})
                     signals.append({"date": day["t"], "type": "CANCEL", "reason": reason})
                     state = "IDLE"; pending = None
 
-        # ── IN_TRADE ─────────────────────────────────────────────────────
         elif state == "IN_TRADE":
             e  = active["entry_price"]
             sl = active["sl"]
@@ -352,52 +266,39 @@ def run_backtest(bars: list, params: dict) -> dict:
             if xp is not None:
                 pnl = round((xp - e) * sh, 2)
                 capital = round(capital + pnl, 2)
-                entry_i = active.get("entry_idx", i)
-                trades.append({**active,
-                    "exit_date":     day["t"],
-                    "exit_price":    xp,
-                    "exit_reason":   xr,
-                    "pnl":           pnl,
-                    "capital_after": capital,
-                    "hold_days":     i - entry_i,
-                })
+                entry_i = next((j for j, b in enumerate(bars)
+                                if b["t"] == active["entry_date"]), i)
+                trades.append({**active, "exit_date": day["t"], "exit_price": xp,
+                               "exit_reason": xr, "pnl": pnl,
+                               "capital_after": capital, "hold_days": i - entry_i})
                 state = "IDLE"; active = None
 
-    # Close open trade at last bar
+    # Close open trade at end
     if state == "IN_TRADE" and active:
         last = bars[-1]
         pnl  = round((last["c"] - active["entry_price"]) * active["shares"], 2)
         capital = round(capital + pnl, 2)
-        entry_i = active.get("entry_idx", len(bars) - 1)
-        trades.append({**active,
-            "exit_date":     last["t"],
-            "exit_price":    last["c"],
-            "exit_reason":   "EOD (Open P&L)",
-            "pnl":           pnl,
-            "capital_after": capital,
-            "hold_days":     len(bars) - 1 - entry_i,
-            "is_open":       True,
-        })
+        entry_i = next((j for j, b in enumerate(bars)
+                        if b["t"] == active["entry_date"]), len(bars) - 1)
+        trades.append({**active, "exit_date": last["t"], "exit_price": last["c"],
+                       "exit_reason": "EOD (Open P&L)", "pnl": pnl,
+                       "capital_after": capital,
+                       "hold_days": len(bars) - 1 - entry_i, "is_open": True})
 
-    # ── METRICS ──────────────────────────────────────────────────────────────
+    # ── METRICS ──────────────────────────────────────────────
     wins   = [t for t in trades if t["pnl"] > 0]
     losses = [t for t in trades if t["pnl"] <= 0 and not t.get("is_open")]
-
     net_pnl  = round(capital - capital_start, 2)
     ret_pct  = round(net_pnl / capital_start * 100, 2)
     win_rate = round(len(wins) / len(trades) * 100, 1) if trades else 0.0
     avg_win  = round(sum(t["pnl"] for t in wins)   / len(wins),   2) if wins   else 0.0
     avg_loss = round(sum(t["pnl"] for t in losses) / len(losses), 2) if losses else 0.0
     pf_ratio = round(abs(avg_win / avg_loss), 2) if avg_loss else 0.0
-
-    max_dd = 0.0
-    peak   = capital_start
+    max_dd = 0.0; peak = capital_start
     for t in trades:
-        if t["capital_after"] > peak:
-            peak = t["capital_after"]
+        if t["capital_after"] > peak: peak = t["capital_after"]
         dd = t["capital_after"] - peak
-        if dd < max_dd:
-            max_dd = dd
+        if dd < max_dd: max_dd = dd
     max_dd = round(max_dd, 2)
 
     equity = [{"date": bars[0]["t"], "capital": capital_start}]
@@ -405,38 +306,21 @@ def run_backtest(bars: list, params: dict) -> dict:
         equity.append({"date": t["exit_date"], "capital": t["capital_after"]})
 
     return {
-        "params": {
-            "ema_period":    ema_period,
-            "rsi_period":    rsi_period,
-            "rsi_threshold": rsi_threshold,
-            "rr_ratio":      rr_ratio,
-            "capital":       capital_start,
-        },
+        "params": {"ema_period": ema_period, "rsi_period": rsi_period,
+                   "rsi_threshold": rsi_threshold, "rr_ratio": rr_ratio,
+                   "capital": capital_start},
         "summary": {
-            "total_trades":   len(trades),
-            "wins":           len(wins),
-            "losses":         len(losses),
-            "win_rate":       win_rate,
-            "net_pnl":        net_pnl,
-            "return_pct":     ret_pct,
-            "avg_win":        avg_win,
-            "avg_loss":       avg_loss,
-            "profit_factor":  pf_ratio,
-            "max_drawdown":   max_dd,
-            "total_signals":  len([s for s in signals if s["type"] == "SIGNAL"]),
-            "cancels":        len(cancels),
-            "final_capital":  round(capital, 2),
+            "total_trades": len(trades), "wins": len(wins), "losses": len(losses),
+            "win_rate": win_rate, "net_pnl": net_pnl, "return_pct": ret_pct,
+            "avg_win": avg_win, "avg_loss": avg_loss, "profit_factor": pf_ratio,
+            "max_drawdown": max_dd,
+            "total_signals": len([s for s in signals if s["type"] == "SIGNAL"]),
+            "cancels": len(cancels), "final_capital": round(capital, 2),
         },
-        "trades":   trades,
-        "signals":  signals,
-        "cancels":  cancels,
-        "equity":   equity,
-        # ── FIX: include indicator-annotated bars so frontend can render chart
-        "bars":     bars,
+        "trades": trades, "signals": signals, "cancels": cancels, "equity": equity,
     }
 
-
-# ─── API ROUTES ──────────────────────────────────────────────────────────────
+# ── API ROUTES ────────────────────────────────────────────────
 
 @app.route("/")
 def index():
@@ -445,13 +329,10 @@ def index():
 
 @app.route("/api/search")
 def search():
-    """GET /api/search?q=DABUR&limit=10"""
     q     = request.args.get("q", "").strip().lower()
     limit = int(request.args.get("limit", 10))
-
     if len(q) < 1:
         return jsonify([])
-
     results = []
     for name, symbol, entry in SEARCH_INDEX:
         if symbol.startswith(q) or symbol.replace(".ns","").replace(".bo","") == q:
@@ -462,32 +343,24 @@ def search():
     for name, symbol, entry in SEARCH_INDEX:
         if entry not in results and q in symbol:
             results.append(entry)
-
     return jsonify(results[:limit])
 
 
 @app.route("/api/data")
 def get_data():
-    """GET /api/data?symbol=DABUR.NS&interval=1d&refresh=false"""
     symbol   = request.args.get("symbol", "").strip().upper()
     interval = request.args.get("interval", "1d").strip()
     refresh  = request.args.get("refresh", "false").lower() == "true"
-
     if not symbol:
         return jsonify({"error": "symbol is required"}), 400
     if interval not in INTERVAL_MAP:
         return jsonify({"error": f"interval must be one of {list(INTERVAL_MAP.keys())}"}), 400
-
     if refresh:
         cache_bust(symbol, interval)
-
     cached = cache_read(symbol, interval)
     if cached:
-        log.info(f"Cache hit: {symbol} {interval}")
-        bars = add_indicators(cached["bars"], 5, 14)
-        cached["bars"] = bars
+        cached["bars"] = add_indicators(cached["bars"], 5, 14)
         return jsonify(cached)
-
     try:
         data = fetch_ohlcv(symbol, interval)
         cache_write(symbol, interval, data)
@@ -499,20 +372,9 @@ def get_data():
 
 @app.route("/api/backtest", methods=["POST"])
 def backtest():
-    """
-    POST /api/backtest
-    {
-      "symbol": "DABUR.NS", "interval": "1d",
-      "ema_period": 5, "rsi_period": 14, "rsi_threshold": 30,
-      "rr_ratio": 3.0, "capital": 100000
-    }
-    Returns full backtest result INCLUDING annotated bars for chart rendering.
-    """
     body = request.get_json(force=True, silent=True) or {}
-
     symbol   = body.get("symbol", "").strip().upper()
     interval = body.get("interval", "1d").strip()
-
     if not symbol:
         return jsonify({"error": "symbol is required"}), 400
 
@@ -532,32 +394,27 @@ def backtest():
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
-    result = run_backtest(list(cached["bars"]), params)
+    bars   = list(cached["bars"])   # copy before mutation
+    result = run_backtest(bars, params)
+
+    # ── v1.1 FIX: include bars so frontend chart can render ──
+    result["bars"]       = bars     # bars now have .ema and .rsi attached
     result["symbol"]     = symbol
     result["interval"]   = interval
-    result["total_bars"] = len(cached["bars"])
+    result["total_bars"] = len(bars)
 
     return jsonify(result)
 
 
 @app.route("/api/batch", methods=["POST"])
 def batch_backtest():
-    """
-    POST /api/batch
-    { "group": "NIFTY50", "interval": "1d", ... params ... }
-    OR
-    { "symbols": ["DABUR.NS", ...], ... }
-    Returns summary rows — no full bars (keeps response small).
-    """
-    body = request.get_json(force=True, silent=True) or {}
-
+    body     = request.get_json(force=True, silent=True) or {}
     group    = body.get("group", "")
     symbols  = body.get("symbols", [])
     interval = body.get("interval", "1d")
 
     if group:
         symbols = [s["symbol"] for s in STOCKS if group in s.get("groups", [])]
-
     if not symbols:
         return jsonify({"error": "No symbols provided"}), 400
 
@@ -579,7 +436,7 @@ def batch_backtest():
                 cache_write(sym, interval, cached)
             bt = run_backtest(list(cached["bars"]), params)
             results.append({
-                "symbol":        sym,
+                "symbol": sym,
                 "total_trades":  bt["summary"]["total_trades"],
                 "wins":          bt["summary"]["wins"],
                 "losses":        bt["summary"]["losses"],
@@ -589,7 +446,7 @@ def batch_backtest():
                 "profit_factor": bt["summary"]["profit_factor"],
                 "max_drawdown":  bt["summary"]["max_drawdown"],
                 "total_signals": bt["summary"]["total_signals"],
-                "status":        "ok",
+                "status": "ok",
             })
         except Exception as e:
             results.append({"symbol": sym, "status": "error", "error": str(e)})
@@ -600,7 +457,6 @@ def batch_backtest():
 
 @app.route("/api/groups")
 def get_groups():
-    """GET /api/groups — returns available stock group names + counts."""
     groups = {}
     for s in STOCKS:
         for g in s.get("groups", []):
@@ -611,22 +467,19 @@ def get_groups():
 
 @app.route("/api/cache/clear", methods=["POST"])
 def clear_cache():
-    """POST /api/cache/clear — clears all cached OHLCV data files."""
     count = 0
     for f in CACHE_DIR.glob("*.json"):
-        f.unlink()
-        count += 1
+        f.unlink(); count += 1
     return jsonify({"cleared": count})
 
 
 @app.route("/health")
 def health():
-    return jsonify({"status": "ok", "stocks": len(STOCKS), "cache_dir": str(CACHE_DIR)})
+    return jsonify({"status": "ok", "stocks": len(STOCKS)})
 
 
-# ─── ENTRY POINT ─────────────────────────────────────────────────────────────
 if __name__ == "__main__":
     port  = int(os.environ.get("PORT", 5000))
     debug = os.environ.get("DEBUG", "false").lower() == "true"
-    log.info(f"StratEdge starting on port {port}  debug={debug}  stocks={len(STOCKS)}")
+    log.info(f"StratEdge starting on port {port}  debug={debug}")
     app.run(host="0.0.0.0", port=port, debug=debug)
