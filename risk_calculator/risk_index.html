@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Risk Calculator · StratEdge</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+/* ── THEME VARS ───────────────────────────────── */
+:root{
+  --bg:#020508;--bg1:#060c12;--bg2:#0a1520;--bg3:#0f1d2c;
+  --border:#1a3048;--border2:#234060;
+  --txt:#c8dff0;--txt1:#6a8ba8;--txt2:#2d4a60;
+  --green:#00e5a0;--green2:rgba(0,229,160,.1);
+  --red:#ff3d5c;--red2:rgba(255,61,92,.1);
+  --amber:#ffb020;--amber2:rgba(255,176,32,.1);
+  --blue:#3d7fff;--blue2:rgba(61,127,255,.12);
+  --purple:#a855f7;
+  --mono:'Courier New',monospace;
+  --body:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --rad:8px;--rad2:12px;
+}
+[data-theme="light"]{
+  --bg:#f0f4f8;--bg1:#fff;--bg2:#f8fafc;--bg3:#eef2f7;
+  --border:#d1dce8;--border2:#b8cce0;
+  --txt:#1a2e42;--txt1:#4a6080;--txt2:#8aa0b8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--txt);font-family:var(--body);font-size:14px}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+
+/* ── LAYOUT ───────────────────────────────────── */
+.rc-wrapper{max-width:1400px;margin:0 auto;padding:20px 16px}
+
+/* ── TOPBAR ───────────────────────────────────── */
+.rc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.rc-logo{display:flex;align-items:center;gap:10px}
+.rc-logo-dot{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green)}
+.rc-logo h1{font-size:22px;font-weight:700;letter-spacing:.05em}
+.rc-logo span{color:var(--green)}
+.rc-logo p{font-size:11px;color:var(--txt2);margin-top:1px}
+.rc-header-actions{display:flex;align-items:center;gap:8px}
+.theme-btn{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:7px 12px;color:var(--txt1);cursor:pointer;font-size:12px;transition:all .15s}
+.theme-btn:hover{color:var(--txt);border-color:var(--border2)}
+.back-btn{background:var(--blue2);border:1px solid rgba(61,127,255,.3);border-radius:6px;padding:7px 14px;color:var(--blue);font-size:12px;font-weight:600;text-decoration:none;transition:all .15s}
+.back-btn:hover{background:var(--blue);color:#fff}
+
+/* ── TABS ─────────────────────────────────────── */
+.rc-tabs{display:flex;gap:4px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rad);padding:4px;margin-bottom:20px;flex-wrap:wrap}
+.rc-tab{flex:1;min-width:110px;padding:8px 12px;border:none;border-radius:6px;background:transparent;color:var(--txt2);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap;text-align:center}
+.rc-tab:hover{color:var(--txt);background:var(--bg3)}
+.rc-tab.active{background:var(--blue);color:#fff;box-shadow:0 0 10px rgba(61,127,255,.3)}
+
+/* ── PANELS ───────────────────────────────────── */
+.rc-panel{display:none}
+.rc-panel.active{display:block}
+
+/* ── GRID ─────────────────────────────────────── */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+
+/* ── CARD ─────────────────────────────────────── */
+.card{background:var(--bg1);border:1px solid var(--border);border-radius:var(--rad2);padding:20px}
+.card-title{font-size:13px;font-weight:700;color:var(--txt);margin-bottom:16px;display:flex;align-items:center;gap:8px;letter-spacing:.03em}
+.card-title .icon{font-size:16px}
+
+/* ── FORM ─────────────────────────────────────── */
+.form-group{margin-bottom:14px}
+.form-label{display:block;font-size:11px;color:var(--txt2);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.form-input{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--txt);font-size:13px;outline:none;transition:border-color .15s}
+.form-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(61,127,255,.1)}
+.form-select{width:100%;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:9px 12px;color:var(--txt);font-size:13px;outline:none;cursor:pointer}
+.form-row{display:flex;gap:10px}
+.form-row .form-group{flex:1}
+
+/* ── BUTTONS ──────────────────────────────────── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border:none;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:linear-gradient(135deg,#0057d9,var(--blue));color:#fff;box-shadow:0 2px 8px rgba(61,127,255,.3)}
+.btn-primary:hover{box-shadow:0 4px 16px rgba(61,127,255,.5)}
+.btn-green{background:linear-gradient(135deg,#00a86b,var(--green));color:#000}
+.btn-green:hover{box-shadow:0 4px 16px rgba(0,229,160,.4)}
+.btn-red{background:linear-gradient(135deg,#cc2040,var(--red));color:#fff}
+.btn-sm{padding:6px 12px;font-size:11px}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--txt1)}
+.btn-outline:hover{color:var(--txt);border-color:var(--blue);background:var(--blue2)}
+.btn-full{width:100%;justify-content:center}
+
+/* ── RESULT CARDS ─────────────────────────────── */
+.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:16px}
+.res-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.res-label{font-size:10px;color:var(--txt2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.res-value{font-size:18px;font-weight:700;font-family:var(--mono)}
+.res-sub{font-size:10px;color:var(--txt2);margin-top:3px}
+.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}.blue{color:var(--blue)}.white{color:var(--txt)}
+
+/* ── STAT BAR ─────────────────────────────────── */
+.stat-bar{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.stat-bar-label{font-size:12px;color:var(--txt1)}
+.stat-bar-val{font-size:13px;font-weight:700;font-family:var(--mono)}
+
+/* ── RR VISUAL ────────────────────────────────── */
+.rr-bar-wrap{margin-top:16px;border-radius:6px;overflow:hidden;height:28px;display:flex;background:var(--bg3)}
+.rr-loss{background:linear-gradient(90deg,#cc2040,var(--red));display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff;font-weight:700;min-width:32px}
+.rr-win{background:linear-gradient(90deg,#00a86b,var(--green));display:flex;align-items:center;justify-content:center;font-size:11px;color:#000;font-weight:700;flex:1}
+
+/* ── JOURNAL TABLE ────────────────────────────── */
+.journal-table-wrap{overflow-x:auto;margin-top:12px}
+.journal-table{width:100%;border-collapse:collapse;font-size:12px}
+.journal-table th{padding:8px 10px;text-align:left;color:var(--txt2);font-size:10px;text-transform:uppercase;letter-spacing:.08em;border-bottom:1px solid var(--border);background:var(--bg2)}
+.journal-table td{padding:8px 10px;border-bottom:1px solid var(--border)}
+.journal-table tr:hover td{background:var(--bg2)}
+.badge{font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px}
+.badge-buy{background:var(--green2);color:var(--green)}
+.badge-sell{background:var(--red2);color:var(--red)}
+.badge-win{background:var(--green2);color:var(--green)}
+.badge-loss{background:var(--red2);color:var(--red)}
+
+/* ── PORTFOLIO POSITION ROW ───────────────────── */
+.pos-row{display:grid;grid-template-columns:80px 1fr 80px 80px 80px 80px 80px 32px;gap:8px;align-items:center;margin-bottom:8px}
+.pos-row input{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:5px 8px;color:var(--txt);font-size:12px;outline:none;width:100%}
+.pos-row input:focus{border-color:var(--blue)}
+.pos-del{background:var(--red2);color:var(--red);border:none;border-radius:4px;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+
+/* ── CHART ────────────────────────────────────── */
+.chart-wrap{position:relative;height:240px;margin-top:14px}
+
+/* ── TOAST ────────────────────────────────────── */
+#rc-toast{position:fixed;bottom:24px;right:20px;z-index:9999;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:10px 16px;font-size:12px;display:none;box-shadow:0 8px 24px rgba(0,0,0,.5);max-width:300px}
+
+/* ── EXPORT BUTTONS ───────────────────────────── */
+.export-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div class="rc-wrapper">
+
+<!-- HEADER -->
+<div class="rc-header">
+  <div class="rc-logo">
+    <div class="rc-logo-dot"></div>
+    <div>
+      <h1>STRAT<span>EDGE</span> Risk</h1>
+      <p>Advanced Trading Risk Calculator</p>
+    </div>
+  </div>
+  <div class="rc-header-actions">
+    <button class="theme-btn" onclick="toggleTheme()">☀ / ☾ Theme</button>
+    <a href="/" class="back-btn">← Back to Charts</a>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="rc-tabs">
+  <button class="rc-tab active" onclick="showTab('pos-size')">📐 Position Size</button>
+  <button class="rc-tab" onclick="showTab('rr-calc')">⚖ Risk/Reward</button>
+  <button class="rc-tab" onclick="showTab('sl-calc')">🛑 Stop Loss</button>
+  <button class="rc-tab" onclick="showTab('lev-calc')">⚡ Leverage</button>
+  <button class="rc-tab" onclick="showTab('liq-calc')">💧 Liquidation</button>
+  <button class="rc-tab" onclick="showTab('port-calc')">📊 Portfolio</button>
+  <button class="rc-tab" onclick="showTab('dd-calc')">📉 Drawdown</button>
+  <button class="rc-tab" onclick="showTab('journal')">📓 Journal</button>
+</div>
+
+<!-- ═══════════════════════════════════════ POSITION SIZE ═══ -->
+<div id="tab-pos-size" class="rc-panel active">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="icon">📐</span>Position Size Calculator</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Account Size (₹)</label><input class="form-input" id="ps-acc" type="number" value="100000" placeholder="100000"></div>
+        <div class="form-group"><label class="form-label">Risk %</label><input class="form-input" id="ps-rpct" type="number" value="1" step="0.1" placeholder="1"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Entry Price (₹)</label><input class="form-input" id="ps-entry" type="number" placeholder="450.00"></div>
+        <div class="form-group"><label class="form-label">Stop Loss (₹)</label><input class="form-input" id="ps-sl" type="number" placeholder="440.00"></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="calcPositionSize()">Calculate Position Size</button>
+      <div id="ps-result" class="result-grid" style="display:none"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span>Risk Visualization</div>
+      <div class="chart-wrap"><canvas id="ps-chart"></canvas></div>
+      <div id="ps-guide" style="margin-top:14px;font-size:11px;color:var(--txt2);line-height:1.6">
+        <b style="color:var(--txt)">How it works:</b><br>
+        1% risk on ₹1,00,000 = ₹1,000 max loss per trade.<br>
+        If stop is ₹10 away → buy 100 shares.<br>
+        Position value = shares × entry price.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ RISK/REWARD ══════ -->
+<div id="tab-rr-calc" class="rc-panel">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="icon">⚖</span>Risk / Reward Calculator</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Entry Price (₹)</label><input class="form-input" id="rr-entry" type="number" placeholder="500.00"></div>
+        <div class="form-group"><label class="form-label">Stop Loss (₹)</label><input class="form-input" id="rr-sl" type="number" placeholder="485.00"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Target (₹)</label><input class="form-input" id="rr-target" type="number" placeholder="545.00"></div>
+        <div class="form-group"><label class="form-label">Shares</label><input class="form-input" id="rr-shares" type="number" value="100" placeholder="100"></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="calcRR()">Calculate R:R</button>
+      <div id="rr-result" style="display:none;margin-top:16px">
+        <div class="result-grid" id="rr-cards"></div>
+        <div class="rr-bar-wrap" id="rr-bar" style="margin-top:14px">
+          <div class="rr-loss" id="rr-loss-bar" style="width:33%">-1R</div>
+          <div class="rr-win" id="rr-win-bar">+R</div>
+        </div>
+        <div style="margin-top:8px;font-size:11px;color:var(--txt2);text-align:center" id="rr-beven"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">📈</span>Price Levels Chart</div>
+      <div class="chart-wrap"><canvas id="rr-chart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ STOP LOSS ════════ -->
+<div id="tab-sl-calc" class="rc-panel">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="icon">🛑</span>Stop Loss Calculator</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Entry Price (₹)</label><input class="form-input" id="sl-entry" type="number" placeholder="500.00"></div>
+        <div class="form-group"><label class="form-label">Direction</label>
+          <select class="form-select" id="sl-dir"><option value="BUY">BUY (Long)</option><option value="SELL">SELL (Short)</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Account Size (₹)</label><input class="form-input" id="sl-acc" type="number" value="100000"></div>
+        <div class="form-group"><label class="form-label">Risk %</label><input class="form-input" id="sl-rpct" type="number" value="1" step="0.1"></div>
+      </div>
+      <div class="form-group"><label class="form-label">ATR (optional)</label><input class="form-input" id="sl-atr" type="number" placeholder="Leave blank if unknown"></div>
+      <button class="btn btn-primary btn-full" onclick="calcSL()">Calculate Stop Loss</button>
+      <div id="sl-result" class="result-grid" style="display:none;margin-top:16px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">💡</span>Stop Loss Guide</div>
+      <div style="font-size:12px;color:var(--txt1);line-height:1.8">
+        <b style="color:var(--txt)">% Based Stop:</b><br>
+        Places SL at X% from entry. Simple but doesn't account for volatility.<br><br>
+        <b style="color:var(--txt)">ATR Based Stop (1.5× ATR):</b><br>
+        Uses Average True Range to place SL beyond normal noise. Best for volatile stocks.<br><br>
+        <b style="color:var(--amber)">Rule:</b> Always place SL before calculating position size.<br><br>
+        <b style="color:var(--green)">Tip:</b> For NSE stocks, use 1D ATR. For intraday, use 15m ATR.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ LEVERAGE ═════════ -->
+<div id="tab-lev-calc" class="rc-panel">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="icon">⚡</span>Leverage Calculator</div>
+      <div class="form-group"><label class="form-label">Mode</label>
+        <select class="form-select" id="lev-mode" onchange="toggleLevMode()">
+          <option value="find_leverage">Find Leverage (margin + position value)</option>
+          <option value="find_margin">Find Margin (position value + leverage)</option>
+        </select>
+      </div>
+      <div id="lev-mode-a">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Margin (₹)</label><input class="form-input" id="lev-margin" type="number" placeholder="10000"></div>
+          <div class="form-group"><label class="form-label">Position Value (₹)</label><input class="form-input" id="lev-posval-a" type="number" placeholder="100000"></div>
+        </div>
+      </div>
+      <div id="lev-mode-b" style="display:none">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Position Value (₹)</label><input class="form-input" id="lev-posval-b" type="number" placeholder="100000"></div>
+          <div class="form-group"><label class="form-label">Leverage</label><input class="form-input" id="lev-leverage" type="number" placeholder="10"></div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="calcLeverage()">Calculate</button>
+      <div id="lev-result" class="result-grid" style="display:none;margin-top:16px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">⚠</span>Leverage Risk Table</div>
+      <table style="width:100%;font-size:12px;border-collapse:collapse" id="lev-table">
+        <thead><tr style="color:var(--txt2);font-size:10px">
+          <th style="padding:6px;text-align:left">Leverage</th>
+          <th style="padding:6px;text-align:right">Margin %</th>
+          <th style="padding:6px;text-align:right">Liq at 1% drop</th>
+          <th style="padding:6px;text-align:right">Risk Level</th>
+        </tr></thead>
+        <tbody id="lev-table-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ LIQUIDATION ══════ -->
+<div id="tab-liq-calc" class="rc-panel">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="icon">💧</span>Futures Liquidation Calculator</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Entry Price (₹)</label><input class="form-input" id="liq-entry" type="number" placeholder="45000"></div>
+        <div class="form-group"><label class="form-label">Leverage</label><input class="form-input" id="liq-lev" type="number" value="10" placeholder="10"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Direction</label>
+          <select class="form-select" id="liq-dir"><option value="LONG">LONG</option><option value="SHORT">SHORT</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Maintenance Margin %</label><input class="form-input" id="liq-mm" type="number" value="0.5" step="0.1"></div>
+      </div>
+      <button class="btn btn-red btn-full" onclick="calcLiquidation()">Calculate Liquidation Price</button>
+      <div id="liq-result" style="display:none;margin-top:16px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span>Liquidation Range Chart</div>
+      <div class="chart-wrap"><canvas id="liq-chart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ PORTFOLIO ════════ -->
+<div id="tab-port-calc" class="rc-panel">
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title"><span class="icon">📊</span>Portfolio Risk Analyzer</div>
+    <div class="form-row" style="margin-bottom:14px">
+      <div class="form-group"><label class="form-label">Account Size (₹)</label><input class="form-input" id="port-acc" type="number" value="500000"></div>
+    </div>
+    <div style="display:grid;grid-template-columns:80px 1fr 80px 80px 80px 80px 80px 32px;gap:8px;margin-bottom:6px">
+      <div style="font-size:10px;color:var(--txt2);text-transform:uppercase;padding:4px 0">Symbol</div>
+      <div style="font-size:10px;color:var(--txt2);text-transform:uppercase;padding:4px 0">Name</div>
+      <div style="font-size:10px;color:var(--txt2);text-transform:uppercase;padding:4px 0">Entry</div>
+      <div style="font-size:10px;color:var(--txt2);text-transform:uppercase;padding:4px 0">Current</div>
+      <div style="font-size:10px;color:var(--txt2);text-transform:uppercase;padding:4px 0">Shares</div>
+      <div style="font-size:10px;color:var(--txt2);text-transform:uppercase;padding:4px 0">Stop Loss</div>
+      <div style="font-size:10px;color:var(--txt2);text-transform:uppercase;padding:4px 0">Value</div>
+      <div></div>
+    </div>
+    <div id="port-positions"></div>
+    <div style="display:flex;gap:8px;margin-top:10px">
+      <button class="btn btn-outline btn-sm" onclick="addPortRow()">+ Add Position</button>
+      <button class="btn btn-primary" onclick="calcPortfolio()">Analyze Portfolio</button>
+    </div>
+  </div>
+  <div id="port-result" style="display:none">
+    <div class="grid-4" id="port-summary-cards"></div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card"><div class="card-title">Position Breakdown</div><div class="chart-wrap"><canvas id="port-pie"></canvas></div></div>
+      <div class="card"><div class="card-title">Risk per Position</div><div class="chart-wrap"><canvas id="port-bar"></canvas></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ DRAWDOWN ═════════ -->
+<div id="tab-dd-calc" class="rc-panel">
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title"><span class="icon">📉</span>Drawdown Calculator</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Peak Value (₹)</label><input class="form-input" id="dd-peak" type="number" placeholder="150000"></div>
+        <div class="form-group"><label class="form-label">Current Value (₹)</label><input class="form-input" id="dd-curr" type="number" placeholder="120000"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">RR Ratio</label><input class="form-input" id="dd-rr" type="number" value="2" step="0.5"></div>
+        <div class="form-group"><label class="form-label">Risk per Trade %</label><input class="form-input" id="dd-risk-pct" type="number" value="1" step="0.1"></div>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="calcDrawdown()">Calculate Drawdown</button>
+      <div id="dd-result" class="result-grid" style="display:none;margin-top:16px"></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">📈</span>Equity Curve Analyzer</div>
+      <div class="form-group"><label class="form-label">Paste equity values (comma separated)</label>
+        <textarea class="form-input" id="dd-curve" rows="4" placeholder="100000, 105000, 98000, 112000, 108000, 125000..."></textarea>
+      </div>
+      <button class="btn btn-outline btn-full" onclick="calcDrawdownCurve()">Analyze Curve</button>
+      <div id="dd-curve-result" style="margin-top:14px"></div>
+      <div class="chart-wrap" style="margin-top:10px"><canvas id="dd-chart"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ JOURNAL ══════════ -->
+<div id="tab-journal" class="rc-panel">
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title"><span class="icon">➕</span>Add Trade</div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Symbol</label><input class="form-input" id="j-sym" placeholder="RELIANCE"></div>
+        <div class="form-group"><label class="form-label">Date</label><input class="form-input" id="j-date" type="date"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Direction</label>
+          <select class="form-select" id="j-dir"><option value="BUY">BUY</option><option value="SELL">SELL</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Shares</label><input class="form-input" id="j-shares" type="number" value="10"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Entry</label><input class="form-input" id="j-entry" type="number" placeholder="450.00"></div>
+        <div class="form-group"><label class="form-label">Exit</label><input class="form-input" id="j-exit" type="number" placeholder="480.00"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">Strategy</label><input class="form-input" id="j-strategy" placeholder="EMA + RSI"></div>
+        <div class="form-group"><label class="form-label">Setup</label><input class="form-input" id="j-setup" placeholder="Pullback entry"></div>
+      </div>
+      <div class="form-group"><label class="form-label">Notes</label><textarea class="form-input" id="j-notes" rows="2" placeholder="What went well? What to improve?"></textarea></div>
+      <button class="btn btn-green btn-full" onclick="addJournalTrade()">Save Trade</button>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span>Journal Summary</div>
+      <div id="j-summary" style="color:var(--txt2);font-size:12px;text-align:center;padding:20px">No trades yet. Add your first trade!</div>
+      <div class="export-row" style="margin-top:14px">
+        <button class="btn btn-outline btn-sm" onclick="exportCSV()">⬇ CSV Export</button>
+        <button class="btn btn-outline btn-sm" onclick="exportJSON()">⬇ JSON Export</button>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title"><span class="icon">📓</span>Trade Log</div>
+    <div class="journal-table-wrap">
+      <table class="journal-table">
+        <thead><tr>
+          <th>Date</th><th>Symbol</th><th>Dir</th><th>Entry</th><th>Exit</th>
+          <th>Shares</th><th>P&L</th><th>Strategy</th><th>Notes</th><th></th>
+        </tr></thead>
+        <tbody id="j-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</div><!-- rc-wrapper -->
+<div id="rc-toast"></div>
+
+<script>
+'use strict';
+const API = '';  // same origin, ingress routes to /risk-calculator/*
+
+// ── UTILS ──────────────────────────────────────
+function toast(msg, ms=2500){
+  const el=document.getElementById('rc-toast');
+  el.textContent=msg;el.style.display='block';
+  clearTimeout(el._t);el._t=setTimeout(()=>el.style.display='none',ms);
+}
+function fp(n){return '₹'+parseFloat(n||0).toLocaleString('en-IN',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function fmtPct(n){return (n>=0?'+':'')+parseFloat(n||0).toFixed(2)+'%'}
+function resCard(label,value,cls='white',sub=''){
+  return `<div class="res-card"><div class="res-label">${label}</div><div class="res-value ${cls}">${value}</div>${sub?`<div class="res-sub">${sub}</div>`:''}</div>`;
+}
+function showTab(id){
+  document.querySelectorAll('.rc-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.rc-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+function toggleTheme(){
+  const html=document.documentElement;
+  html.dataset.theme=html.dataset.theme==='dark'?'light':'dark';
+}
+async function apiPost(endpoint,body){
+  const r=await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!r.ok)throw new Error((await r.json()).error||'API error');
+  return (await r.json()).data;
+}
+
+// ── CHART UTILS ────────────────────────────────
+let _charts={};
+function makeChart(id,type,data,options={}){
+  if(_charts[id])_charts[id].destroy();
+  const ctx=document.getElementById(id).getContext('2d');
+  _charts[id]=new Chart(ctx,{type,data,options:{
+    responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'#6a8ba8',font:{size:11}}}},
+    scales:{x:{ticks:{color:'#6a8ba8'},grid:{color:'#0e1e2e'}},y:{ticks:{color:'#6a8ba8'},grid:{color:'#0e1e2e'}}},
+    ...options
+  }});
+}
+
+// Set today's date in journal
+document.getElementById('j-date').value=new Date().toISOString().split('T')[0];
+
+// ── POSITION SIZE ──────────────────────────────
+async function calcPositionSize(){
+  const body={
+    account_size:parseFloat(document.getElementById('ps-acc').value),
+    risk_pct:parseFloat(document.getElementById('ps-rpct').value),
+    entry:parseFloat(document.getElementById('ps-entry').value),
+    stop_loss:parseFloat(document.getElementById('ps-sl').value),
+  };
+  try{
+    const d=await apiPost('/api/risk/position-size',body);
+    const el=document.getElementById('ps-result');
+    el.style.display='grid';
+    el.innerHTML=
+      resCard('Shares',d.shares,'blue')+
+      resCard('Position Value',fp(d.position_value),'white')+
+      resCard('Max Risk',fp(d.risk_amount),'red')+
+      resCard('Risk %',d.risk_pct_actual+'%','amber')+
+      resCard('Risk/Share',fp(d.risk_per_share),'txt1');
+
+    makeChart('ps-chart','doughnut',{
+      labels:['Position Value','Max Risk'],
+      datasets:[{data:[d.position_value-d.risk_amount,d.risk_amount],backgroundColor:['rgba(0,229,160,.7)','rgba(255,61,92,.7)'],borderColor:['#00e5a0','#ff3d5c'],borderWidth:1}]
+    },{plugins:{legend:{position:'bottom',labels:{color:'#6a8ba8'}}}});
+    toast('✓ Position size calculated');
+  }catch(e){toast('✗ '+e.message)}
+}
+
+// ── RISK/REWARD ────────────────────────────────
+async function calcRR(){
+  const body={
+    entry:parseFloat(document.getElementById('rr-entry').value),
+    stop_loss:parseFloat(document.getElementById('rr-sl').value),
+    target:parseFloat(document.getElementById('rr-target').value),
+    shares:parseInt(document.getElementById('rr-shares').value)||1,
+  };
+  try{
+    const d=await apiPost('/api/risk/rr',body);
+    document.getElementById('rr-result').style.display='block';
+    const cards=document.getElementById('rr-cards');
+    cards.innerHTML=
+      resCard('R:R Ratio',d.rr_label,d.rr_ratio>=2?'green':d.rr_ratio>=1?'amber':'red')+
+      resCard('Win P&L',fp(d.win_pnl),'green')+
+      resCard('Loss P&L',fp(Math.abs(d.loss_pnl)),'red')+
+      resCard('Breakeven WR',d.breakeven_wr_pct+'%','amber','min win rate needed');
+
+    // RR bar
+    const totalW=100,riskW=Math.round(totalW/(1+d.rr_ratio));
+    document.getElementById('rr-loss-bar').style.width=riskW+'%';
+    document.getElementById('rr-loss-bar').textContent='-1R ('+fp(d.loss_pnl)+')';
+    document.getElementById('rr-win-bar').textContent='+'+d.rr_ratio+'R ('+fp(d.win_pnl)+')';
+    document.getElementById('rr-beven').textContent=`You need to win at least ${d.breakeven_wr_pct}% of trades to break even at this R:R`;
+
+    // Chart
+    makeChart('rr-chart','bar',{
+      labels:['Stop Loss','Entry','Target'],
+      datasets:[{
+        label:'Price Level',
+        data:[d.stop_loss,d.entry,d.target],
+        backgroundColor:['rgba(255,61,92,.7)','rgba(61,127,255,.7)','rgba(0,229,160,.7)'],
+        borderColor:['#ff3d5c','#3d7fff','#00e5a0'],
+        borderWidth:1.5,
+      }]
+    },{indexAxis:'y',plugins:{legend:{display:false}}});
+    toast('✓ R:R calculated');
+  }catch(e){toast('✗ '+e.message)}
+}
+
+// ── STOP LOSS ──────────────────────────────────
+async function calcSL(){
+  const body={
+    entry:parseFloat(document.getElementById('sl-entry').value),
+    risk_pct:parseFloat(document.getElementById('sl-rpct').value),
+    account_size:parseFloat(document.getElementById('sl-acc').value),
+    direction:document.getElementById('sl-dir').value,
+    atr:parseFloat(document.getElementById('sl-atr').value)||0,
+  };
+  try{
+    const d=await apiPost('/api/risk/stop-loss',body);
+    const el=document.getElementById('sl-result');
+    el.style.display='grid';
+    el.innerHTML=
+      resCard('% Based SL',fp(d.sl_pct_based),'red')+
+      (d.sl_atr_based?resCard('ATR Based SL',fp(d.sl_atr_based),'amber'):'') +
+      resCard('Risk Amount',fp(d.risk_amount),'red')+
+      resCard('Risk %',d.risk_pct+'%','amber');
+    toast('✓ Stop loss calculated');
+  }catch(e){toast('✗ '+e.message)}
+}
+
+// ── LEVERAGE ───────────────────────────────────
+function toggleLevMode(){
+  const mode=document.getElementById('lev-mode').value;
+  document.getElementById('lev-mode-a').style.display=mode==='find_leverage'?'block':'none';
+  document.getElementById('lev-mode-b').style.display=mode==='find_margin'?'block':'none';
+}
+async function calcLeverage(){
+  const mode=document.getElementById('lev-mode').value;
+  let body={};
+  if(mode==='find_leverage'){
+    body={margin:parseFloat(document.getElementById('lev-margin').value),position_value:parseFloat(document.getElementById('lev-posval-a').value)};
+  }else{
+    body={position_value:parseFloat(document.getElementById('lev-posval-b').value),leverage:parseFloat(document.getElementById('lev-leverage').value)};
+  }
+  try{
+    const d=await apiPost('/api/risk/leverage',body);
+    const el=document.getElementById('lev-result');
+    el.style.display='grid';
+    el.innerHTML=
+      resCard('Leverage',d.leverage+'x','amber')+
+      resCard('Position Value',fp(d.position_value),'white')+
+      resCard('Margin Required',fp(d.margin_required),'blue')+
+      resCard('Margin %',d.margin_pct+'%','txt1');
+
+    // Build leverage risk table
+    const tbody=document.getElementById('lev-table-body');
+    tbody.innerHTML=[2,5,10,20,50,100].map(lev=>{
+      const margin=100/lev;
+      const liqAt1pct=lev>=100?'Instant':'~'+(100/lev).toFixed(1)+'%';
+      const risk=lev<=5?'<span style="color:var(--green)">Low</span>':lev<=20?'<span style="color:var(--amber)">Medium</span>':'<span style="color:var(--red)">High</span>';
+      return `<tr style="border-bottom:1px solid var(--border)"><td style="padding:6px;font-family:monospace;font-weight:700">${lev}x</td><td style="padding:6px;text-align:right">${margin.toFixed(1)}%</td><td style="padding:6px;text-align:right">${liqAt1pct}</td><td style="padding:6px;text-align:right">${risk}</td></tr>`;
+    }).join('');
+    toast('✓ Leverage calculated');
+  }catch(e){toast('✗ '+e.message)}
+}
+
+// ── LIQUIDATION ────────────────────────────────
+async function calcLiquidation(){
+  const body={
+    entry:parseFloat(document.getElementById('liq-entry').value),
+    leverage:parseFloat(document.getElementById('liq-lev').value),
+    direction:document.getElementById('liq-dir').value,
+    maintenance_margin_pct:parseFloat(document.getElementById('liq-mm').value),
+  };
+  try{
+    const d=await apiPost('/api/risk/liquidation',body);
+    const el=document.getElementById('liq-result');
+    el.style.display='block';
+    el.innerHTML=`<div class="result-grid">
+      ${resCard('Liquidation Price',fp(d.liq_price),'red')}
+      ${resCard('Distance to Liq',d.liq_distance_pct+'%','amber')}
+      ${resCard('Initial Margin',fp(d.init_margin),'blue')}
+      ${resCard('Margin %',d.margin_pct+'%','txt1')}
+    </div>
+    <div style="margin-top:12px;background:var(--red2);border:1px solid rgba(255,61,92,.3);border-radius:6px;padding:10px;font-size:11px;color:var(--red)">
+      ⚠ If price reaches ${fp(d.liq_price)}, your entire margin will be lost. Use ${d.direction==='LONG'?'lower':'higher'} leverage or add more margin to protect your position.
+    </div>`;
+
+    makeChart('liq-chart','bar',{
+      labels:['Liquidation','Entry'],
+      datasets:[{
+        label:'Price',
+        data:[d.liq_price,d.entry],
+        backgroundColor:[d.direction==='LONG'?'rgba(255,61,92,.7)':'rgba(0,229,160,.7)','rgba(61,127,255,.7)'],
+        borderColor:[d.direction==='LONG'?'#ff3d5c':'#00e5a0','#3d7fff'],
+        borderWidth:1.5,
+      }]
+    },{indexAxis:'y',plugins:{legend:{display:false}}});
+    toast('✓ Liquidation calculated');
+  }catch(e){toast('✗ '+e.message)}
+}
+
+// ── PORTFOLIO ──────────────────────────────────
+let portRows=[];
+function addPortRow(){
+  const id=Date.now();
+  portRows.push(id);
+  const wrap=document.getElementById('port-positions');
+  const row=document.createElement('div');
+  row.className='pos-row';row.id='port-row-'+id;
+  row.innerHTML=`
+    <input placeholder="INFY" id="pr-sym-${id}">
+    <input placeholder="Infosys" id="pr-name-${id}">
+    <input type="number" placeholder="1500" id="pr-entry-${id}">
+    <input type="number" placeholder="1550" id="pr-curr-${id}">
+    <input type="number" placeholder="100" id="pr-shares-${id}">
+    <input type="number" placeholder="1450" id="pr-sl-${id}">
+    <div id="pr-val-${id}" style="font-family:monospace;font-size:11px;color:var(--txt2);padding:5px 0">—</div>
+    <button class="pos-del" onclick="delPortRow(${id})">×</button>`;
+  wrap.appendChild(row);
+  // Auto-calculate value on input
+  ['entry','shares'].forEach(f=>{
+    document.getElementById(`pr-${f}-${id}`).addEventListener('input',()=>{
+      const e=parseFloat(document.getElementById(`pr-entry-${id}`).value)||0;
+      const s=parseFloat(document.getElementById(`pr-shares-${id}`).value)||0;
+      document.getElementById(`pr-val-${id}`).textContent=fp(e*s);
+    });
+  });
+}
+function delPortRow(id){
+  document.getElementById('port-row-'+id)?.remove();
+  portRows=portRows.filter(r=>r!==id);
+}
+// Add 3 default rows
+[1,2,3].forEach(()=>addPortRow());
+
+async function calcPortfolio(){
+  const acc=parseFloat(document.getElementById('port-acc').value)||500000;
+  const positions=portRows.map(id=>({
+    symbol:document.getElementById(`pr-sym-${id}`)?.value||'?',
+    entry:parseFloat(document.getElementById(`pr-entry-${id}`)?.value)||0,
+    current:parseFloat(document.getElementById(`pr-curr-${id}`)?.value)||0,
+    shares:parseInt(document.getElementById(`pr-shares-${id}`)?.value)||0,
+    stop_loss:parseFloat(document.getElementById(`pr-sl-${id}`)?.value)||0,
+  })).filter(p=>p.entry>0&&p.shares>0);
+  if(!positions.length){toast('⚠ Add at least one position');return}
+  try{
+    const d=await apiPost('/api/risk/portfolio',{account_size:acc,positions});
+    document.getElementById('port-result').style.display='block';
+    const sc=document.getElementById('port-summary-cards');
+    sc.innerHTML=
+      resCard('Total Exposure',fp(d.total_exposure),'blue',d.exposure_pct+'% of account')+
+      resCard('Total Risk',fp(d.total_risk),'red',d.total_risk_pct+'% of account')+
+      resCard('Open P&L',fp(d.total_pnl),d.total_pnl>=0?'green':'red',fmtPct(d.total_pnl_pct))+
+      resCard('Positions',d.position_count,'white');
+
+    makeChart('port-pie','doughnut',{
+      labels:d.positions.map(p=>p.symbol),
+      datasets:[{data:d.positions.map(p=>p.exposure),backgroundColor:['#3d7fff','#00e5a0','#a855f7','#ff3d5c','#ffb020','#00d4ff'],borderWidth:1}]
+    },{plugins:{legend:{position:'bottom',labels:{color:'#6a8ba8'}}}});
+
+    makeChart('port-bar','bar',{
+      labels:d.positions.map(p=>p.symbol),
+      datasets:[{
+        label:'Risk (₹)',
+        data:d.positions.map(p=>p.risk),
+        backgroundColor:'rgba(255,61,92,.7)',borderColor:'#ff3d5c',borderWidth:1.5,
+      },{
+        label:'P&L (₹)',
+        data:d.positions.map(p=>p.pnl),
+        backgroundColor:d.positions.map(p=>p.pnl>=0?'rgba(0,229,160,.7)':'rgba(255,61,92,.5)'),
+        borderColor:d.positions.map(p=>p.pnl>=0?'#00e5a0':'#ff3d5c'),borderWidth:1.5,
+      }]
+    },{});
+    toast('✓ Portfolio analyzed');
+  }catch(e){toast('✗ '+e.message)}
+}
+
+// ── DRAWDOWN ───────────────────────────────────
+async function calcDrawdown(){
+  const body={
+    peak_value:parseFloat(document.getElementById('dd-peak').value),
+    current_value:parseFloat(document.getElementById('dd-curr').value),
+    rr_ratio:parseFloat(document.getElementById('dd-rr').value)||2,
+    risk_per_trade_pct:parseFloat(document.getElementById('dd-risk-pct').value)||1,
+  };
+  try{
+    const d=await apiPost('/api/risk/drawdown',body);
+    const el=document.getElementById('dd-result');
+    el.style.display='grid';
+    el.innerHTML=
+      resCard('Drawdown',fp(d.drawdown),'red')+
+      resCard('DD %',d.drawdown_pct+'%','red')+
+      resCard('Recovery Needed',d.recovery_needed_pct+'%','amber')+
+      resCard('Wins to Recover',d.wins_to_recover,'blue','at current RR+risk%');
+    toast('✓ Drawdown calculated');
+  }catch(e){toast('✗ '+e.message)}
+}
+
+async function calcDrawdownCurve(){
+  const raw=document.getElementById('dd-curve').value;
+  const curve=raw.split(',').map(v=>parseFloat(v.trim())).filter(v=>!isNaN(v));
+  if(curve.length<2){toast('⚠ Need at least 2 values');return}
+  try{
+    const d=await apiPost('/api/risk/drawdown',{equity_curve:curve});
+    document.getElementById('dd-curve-result').innerHTML=`
+      <div class="result-grid">
+        ${resCard('Max Drawdown',fp(d.max_drawdown),'red')}
+        ${resCard('Max DD %',d.max_drawdown_pct+'%','red')}
+        ${resCard('Current DD',fp(d.current_drawdown),d.current_drawdown>0?'red':'green')}
+        ${resCard('Peak',fp(d.peak_value),'blue')}
+      </div>`;
+    makeChart('dd-chart','line',{
+      labels:curve.map((_,i)=>'T'+i),
+      datasets:[{
+        label:'Equity',
+        data:curve,
+        borderColor:'#00e5a0',backgroundColor:'rgba(0,229,160,.08)',
+        borderWidth:2,pointRadius:3,pointBackgroundColor:'#00e5a0',fill:true,
+        tension:.3,
+      }]
+    },{plugins:{legend:{display:false}}});
+    toast('✓ Curve analyzed');
+  }catch(e){toast('✗ '+e.message)}
+}
+
+// ── JOURNAL ────────────────────────────────────
+async function loadJournal(){
+  try{
+    const r=await fetch('/api/risk/journal');
+    const d=await r.json();
+    renderJournal(d.data);
+  }catch(e){}
+}
+
+function renderJournal({trades,summary}){
+  const tbody=document.getElementById('j-tbody');
+  tbody.innerHTML=trades.map(t=>{
+    const w=t.pnl>0;
+    return `<tr>
+      <td>${t.date}</td>
+      <td style="font-weight:700">${t.symbol}</td>
+      <td><span class="badge badge-${t.direction.toLowerCase()}">${t.direction}</span></td>
+      <td style="font-family:monospace">₹${t.entry}</td>
+      <td style="font-family:monospace">₹${t.exit}</td>
+      <td>${t.shares}</td>
+      <td><span class="badge ${w?'badge-win':'badge-loss'}">${t.pnl>=0?'+':''}₹${t.pnl.toFixed(2)}</span></td>
+      <td style="color:var(--txt2)">${t.strategy||'—'}</td>
+      <td style="color:var(--txt2);font-size:11px">${t.notes||'—'}</td>
+      <td><button class="btn btn-sm btn-outline" onclick="deleteTrade('${t.id}')">✕</button></td>
+    </tr>`;
+  }).join('');
+
+  if(summary&&summary.total_trades>0){
+    document.getElementById('j-summary').innerHTML=`
+      <div class="result-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        ${resCard('Total Trades',summary.total_trades,'white')}
+        ${resCard('Win Rate',summary.win_rate+'%',summary.win_rate>=50?'green':'amber')}
+        ${resCard('Net P&L',fp(summary.net_pnl),summary.net_pnl>=0?'green':'red')}
+        ${resCard('Avg Win',fp(summary.avg_win),'green')}
+        ${resCard('Avg Loss',fp(Math.abs(summary.avg_loss)),'red')}
+        ${resCard('PF',summary.avg_win&&summary.avg_loss?(Math.abs(summary.avg_win/summary.avg_loss)).toFixed(2)+'x':'—',Math.abs(summary.avg_win)>Math.abs(summary.avg_loss)?'green':'red')}
+      </div>`;
+  }
+}
+
+async function addJournalTrade(){
+  const body={
+    symbol:document.getElementById('j-sym').value.toUpperCase(),
+    direction:document.getElementById('j-dir').value,
+    entry:parseFloat(document.getElementById('j-entry').value),
+    exit:parseFloat(document.getElementById('j-exit').value),
+    shares:parseInt(document.getElementById('j-shares').value),
+    date:document.getElementById('j-date').value,
+    strategy:document.getElementById('j-strategy').value,
+    setup:document.getElementById('j-setup').value,
+    notes:document.getElementById('j-notes').value,
+  };
+  if(!body.symbol||!body.date){toast('⚠ Symbol and date required');return}
+  try{
+    await apiPost('/api/risk/journal',body);
+    toast('✓ Trade saved');
+    ['j-sym','j-entry','j-exit','j-notes','j-strategy','j-setup'].forEach(id=>document.getElementById(id).value='');
+    loadJournal();
+  }catch(e){toast('✗ '+e.message)}
+}
+
+async function deleteTrade(id){
+  if(!confirm('Delete this trade?'))return;
+  try{
+    await fetch('/api/risk/journal/'+id,{method:'DELETE'});
+    toast('✓ Trade deleted');loadJournal();
+  }catch(e){toast('✗ '+e.message)}
+}
+
+function exportCSV(){
+  window.open('/api/risk/export/csv','_blank');
+  toast('✓ CSV download started');
+}
+function exportJSON(){
+  window.open('/api/risk/export/json','_blank');
+  toast('✓ JSON download started');
+}
+
+// Init
+loadJournal();
+// Set today in journal date
+document.getElementById('j-date').value=new Date().toISOString().split('T')[0];
+</script>
+</body>
+</html>

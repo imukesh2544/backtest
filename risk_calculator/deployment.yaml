@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: risk-calculator
+  namespace: stratedge
+  labels:
+    app: risk-calculator
+    version: v1
+    component: microservice
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: risk-calculator
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0          # zero-downtime deployments
+  template:
+    metadata:
+      labels:
+        app: risk-calculator
+        version: v1
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/metrics"
+        prometheus.io/port: "6000"
+    spec:
+      containers:
+        - name: risk-calculator
+          image: risk-calculator:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6000
+              name: http
+          envFrom:
+            - configMapRef:
+                name: risk-calculator-config
+            - secretRef:
+                name: risk-calculator-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 6000
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 6000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 3
+          volumeMounts:
+            - name: exports-vol
+              mountPath: /app/exports
+      volumes:
+        - name: exports-vol
+          emptyDir: {}
+      restartPolicy: Always

@@ -1,0 +1,138 @@
+---
+# SERVICE
+apiVersion: v1
+kind: Service
+metadata:
+  name: risk-calculator-svc
+  namespace: stratedge
+  labels:
+    app: risk-calculator
+spec:
+  selector:
+    app: risk-calculator
+  ports:
+    - name: http
+      port: 80
+      targetPort: 6000
+      protocol: TCP
+  type: ClusterIP
+
+---
+# INGRESS — adds /risk-calculator path to your existing ingress host
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: risk-calculator-ingress
+  namespace: stratedge
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "300"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      more_set_headers "X-Frame-Options: SAMEORIGIN";
+      more_set_headers "X-Content-Type-Options: nosniff";
+      more_set_headers "X-XSS-Protection: 1; mode=block";
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: stratedge.ocpv.citiuscloud.local   # <-- same host as main app
+      http:
+        paths:
+          - path: /risk-calculator(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: risk-calculator-svc
+                port:
+                  number: 80
+
+---
+# CONFIGMAP
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: risk-calculator-config
+  namespace: stratedge
+data:
+  PORT: "6000"
+  WORKERS: "2"
+  THREADS: "4"
+  LOG_LEVEL: "INFO"
+  RATE_LIMIT: "100 per minute"
+  EXPORT_DIR: "/app/exports"
+  APP_PREFIX: "/risk-calculator"
+  CORS_ORIGINS: "*"
+
+---
+# SECRET (base64 encoded — change in production)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: risk-calculator-secret
+  namespace: stratedge
+type: Opaque
+stringData:
+  JWT_SECRET: "change-me-in-production-use-kubectl-create-secret"
+  SECRET_KEY: "change-me-flask-secret-key-32chars"
+
+---
+# HPA — Horizontal Pod Autoscaler
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: risk-calculator-hpa
+  namespace: stratedge
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: risk-calculator
+  minReplicas: 2
+  maxReplicas: 8
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 65
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75
+
+---
+# NETWORK POLICY — allow ingress from nginx, allow egress to internet
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: risk-calculator-netpol
+  namespace: stratedge
+spec:
+  podSelector:
+    matchLabels:
+      app: risk-calculator
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: ingress-nginx
+        - podSelector:
+            matchLabels:
+              app: stratedge          # allow existing app to call risk API
+      ports:
+        - protocol: TCP
+          port: 6000
+  egress:
+    - ports:
+        - protocol: TCP
+          port: 443
+        - protocol: TCP
+          port: 80
+        - protocol: UDP
+          port: 53

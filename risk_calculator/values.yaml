@@ -1,0 +1,46 @@
+replicaCount: 2
+image:
+  repository: risk-calculator
+  tag: v1
+  pullPolicy: IfNotPresent
+
+namespace: stratedge
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 6000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: stratedge.ocpv.citiuscloud.local
+  path: /risk-calculator
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 8
+  cpuUtilization: 65
+
+env:
+  PORT: "6000"
+  WORKERS: "2"
+  THREADS: "4"
+  LOG_LEVEL: "INFO"
+  APP_PREFIX: "/risk-calculator"
+  CORS_ORIGINS: "*"
+  RATE_LIMIT: "100 per minute"
+  EXPORT_DIR: "/app/exports"
+
+secrets:
+  JWT_SECRET: "change-me-in-production"
+  SECRET_KEY: "change-me-flask-secret"

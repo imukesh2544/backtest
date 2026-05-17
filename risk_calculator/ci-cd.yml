@@ -1,0 +1,92 @@
+name: Risk Calculator CI/CD
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'risk-calculator/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'risk-calculator/**'
+
+env:
+  IMAGE_NAME: risk-calculator
+  NAMESPACE: stratedge
+
+jobs:
+  # ── TEST ──────────────────────────────────────────────────
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: risk-calculator
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt pytest
+
+      - name: Run tests
+        run: pytest tests/ -v --tb=short
+
+  # ── BUILD & PUSH ──────────────────────────────────────────
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    defaults:
+      run:
+        working-directory: risk-calculator
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set image tag
+        id: tag
+        run: echo "TAG=${GITHUB_SHA::8}" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image
+        run: |
+          docker build -t $IMAGE_NAME:${{ steps.tag.outputs.TAG }} .
+          docker tag $IMAGE_NAME:${{ steps.tag.outputs.TAG }} $IMAGE_NAME:latest
+
+      - name: Save image (local cluster — no registry)
+        run: docker save $IMAGE_NAME:${{ steps.tag.outputs.TAG }} | gzip > image.tar.gz
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image
+          path: risk-calculator/image.tar.gz
+
+  # ── DEPLOY ────────────────────────────────────────────────
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download image artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docker-image
+          path: .
+
+      - name: Copy image to cluster node and deploy
+        run: |
+          # In a real cluster, push to registry then:
+          # kubectl set image deployment/risk-calculator \
+          #   risk-calculator=$IMAGE_NAME:${{ steps.tag.outputs.TAG }} \
+          #   -n $NAMESPACE
+          # kubectl rollout status deployment/risk-calculator -n $NAMESPACE
+          echo "Deploy step: push image and update deployment"
+
+      - name: Verify deployment
+        run: |
+          echo "Run: kubectl rollout status deployment/risk-calculator -n $NAMESPACE"

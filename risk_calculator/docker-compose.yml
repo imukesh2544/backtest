@@ -1,0 +1,38 @@
+version: "3.9"
+
+services:
+  risk-calculator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: risk-calculator:dev
+    container_name: risk-calculator
+    ports:
+      - "6000:6000"
+    environment:
+      PORT: "6000"
+      WORKERS: "2"
+      THREADS: "4"
+      LOG_LEVEL: "DEBUG"
+      APP_PREFIX: "/risk-calculator"
+      JWT_SECRET: "dev-secret-change-in-prod"
+      SECRET_KEY: "dev-flask-key-change-in-prod"
+      CORS_ORIGINS: "*"
+      RATE_LIMIT: "200 per minute"
+      EXPORT_DIR: "/app/exports"
+    volumes:
+      - ./exports:/app/exports       # persist exports locally
+      - ./app:/app/app               # hot-reload during dev
+      - ./templates:/app/templates
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD","python","-c","import urllib.request; urllib.request.urlopen('http://localhost:6000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - stratedge-net
+
+networks:
+  stratedge-net:
+    driver: bridge
