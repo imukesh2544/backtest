@@ -1,0 +1,10 @@
+flask==3.0.3
+flask-cors==4.0.1
+yfinance==0.2.61
+pandas==2.2.2
+numpy==1.26.4
+requests==2.32.3
+curl_cffi==0.7.4
+gunicorn==22.0.0
+python-dateutil==2.9.0
+pytz==2024.1

@@ -1,0 +1,2728 @@
+[
+  {
+    "symbol": "^NSEI",
+    "name": "NIFTY 50",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^NSEBANK",
+    "name": "NIFTY BANK",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^BSESN",
+    "name": "SENSEX",
+    "exchange": "BSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "BSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXIT",
+    "name": "NIFTY IT",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXPHARMA",
+    "name": "NIFTY Pharma",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXFMCG",
+    "name": "NIFTY FMCG",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXAUTO",
+    "name": "NIFTY Auto",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXMETAL",
+    "name": "NIFTY Metal",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXENERGY",
+    "name": "NIFTY Energy",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXREALTY",
+    "name": "NIFTY Realty",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXPSUBANK",
+    "name": "NIFTY PSU Bank",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^CNXPSE",
+    "name": "NIFTY PSE",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^INDIAVIX",
+    "name": "India VIX",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "^NSMIDCP100",
+    "name": "NIFTY Midcap 100",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "NIFTY_SMLCAP100.NS",
+    "name": "NIFTY Smallcap 100",
+    "exchange": "NSE",
+    "type": "index",
+    "groups": [
+      "INDICES",
+      "NSE_INDICES"
+    ]
+  },
+  {
+    "symbol": "ADANIENT.NS",
+    "name": "Adani Enterprises",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ADANIPORTS.NS",
+    "name": "Adani Ports",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "APOLLOHOSP.NS",
+    "name": "Apollo Hospitals",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ASIANPAINT.NS",
+    "name": "Asian Paints",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "AXISBANK.NS",
+    "name": "Axis Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "BAJAJ-AUTO.NS",
+    "name": "Bajaj Auto",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "BAJFINANCE.NS",
+    "name": "Bajaj Finance",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "BAJAJFINSV.NS",
+    "name": "Bajaj Finserv",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "BPCL.NS",
+    "name": "BPCL",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "BHARTIARTL.NS",
+    "name": "Bharti Airtel",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "BRITANNIA.NS",
+    "name": "Britannia",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "CIPLA.NS",
+    "name": "Cipla",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "COALINDIA.NS",
+    "name": "Coal India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "DIVISLAB.NS",
+    "name": "Divi's Laboratories",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "DRREDDY.NS",
+    "name": "Dr Reddy's",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "EICHERMOT.NS",
+    "name": "Eicher Motors",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "GRASIM.NS",
+    "name": "Grasim Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "HCLTECH.NS",
+    "name": "HCL Technologies",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "HDFCBANK.NS",
+    "name": "HDFC Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "HDFCLIFE.NS",
+    "name": "HDFC Life",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "HEROMOTOCO.NS",
+    "name": "Hero MotoCorp",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "HINDALCO.NS",
+    "name": "Hindalco",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "HINDUNILVR.NS",
+    "name": "Hindustan Unilever",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "ICICIBANK.NS",
+    "name": "ICICI Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "ITC.NS",
+    "name": "ITC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "INDUSINDBK.NS",
+    "name": "IndusInd Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "INFY.NS",
+    "name": "Infosys",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "JSWSTEEL.NS",
+    "name": "JSW Steel",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "KOTAKBANK.NS",
+    "name": "Kotak Mahindra Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "LTIM.NS",
+    "name": "LTIMindtree",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "LT.NS",
+    "name": "Larsen & Toubro",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "M&M.NS",
+    "name": "Mahindra & Mahindra",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "MARUTI.NS",
+    "name": "Maruti Suzuki",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "NESTLEIND.NS",
+    "name": "Nestle India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "NTPC.NS",
+    "name": "NTPC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "ONGC.NS",
+    "name": "ONGC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "POWERGRID.NS",
+    "name": "Power Grid",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "RELIANCE.NS",
+    "name": "Reliance Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "SBILIFE.NS",
+    "name": "SBI Life",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SHRIRAMFIN.NS",
+    "name": "Shriram Finance",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SBIN.NS",
+    "name": "State Bank of India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "SUNPHARMA.NS",
+    "name": "Sun Pharma",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "TCS.NS",
+    "name": "Tata Consultancy Services",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "TATACONSUM.NS",
+    "name": "Tata Consumer",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "TATAMOTORS.NS",
+    "name": "Tata Motors",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "TATASTEEL.NS",
+    "name": "Tata Steel",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "TECHM.NS",
+    "name": "Tech Mahindra",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "TITAN.NS",
+    "name": "Titan Company",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ULTRACEMCO.NS",
+    "name": "UltraTech Cement",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "WIPRO.NS",
+    "name": "Wipro",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "ABB.NS",
+    "name": "ABB India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ADANIGREEN.NS",
+    "name": "Adani Green",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "AMBUJACEM.NS",
+    "name": "Ambuja Cements",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "AUROPHARMA.NS",
+    "name": "Aurobindo Pharma",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "BANKBARODA.NS",
+    "name": "Bank of Baroda",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "BERGEPAINT.NS",
+    "name": "Berger Paints",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "BOSCHLTD.NS",
+    "name": "Bosch",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "CHOLAFIN.NS",
+    "name": "Cholamandalam Finance",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "COLPAL.NS",
+    "name": "Colgate-Palmolive",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "DABUR.NS",
+    "name": "Dabur India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "DLF.NS",
+    "name": "DLF",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "GAIL.NS",
+    "name": "GAIL India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "GODREJCP.NS",
+    "name": "Godrej Consumer",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "HAVELLS.NS",
+    "name": "Havells India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ICICIGI.NS",
+    "name": "ICICI Lombard",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ICICIPRULI.NS",
+    "name": "ICICI Prudential",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "INDUSTOWER.NS",
+    "name": "Indus Towers",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "IRCTC.NS",
+    "name": "IRCTC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "JINDALSTEL.NS",
+    "name": "Jindal Steel",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "LICI.NS",
+    "name": "LIC of India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "LUPIN.NS",
+    "name": "Lupin",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "MARICO.NS",
+    "name": "Marico",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "MCDOWELL-N.NS",
+    "name": "United Spirits",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "MOTHERSON.NS",
+    "name": "Samvardhana Motherson",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "MUTHOOTFIN.NS",
+    "name": "Muthoot Finance",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "NAUKRI.NS",
+    "name": "Info Edge",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "PAGEIND.NS",
+    "name": "Page Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "PETRONET.NS",
+    "name": "Petronet LNG",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "PIDILITIND.NS",
+    "name": "Pidilite Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "PNB.NS",
+    "name": "Punjab National Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "RECLTD.NS",
+    "name": "REC Limited",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SAIL.NS",
+    "name": "SAIL",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "SRF.NS",
+    "name": "SRF",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SIEMENS.NS",
+    "name": "Siemens India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "TORNTPHARM.NS",
+    "name": "Torrent Pharma",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "TRENT.NS",
+    "name": "Trent",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "TVSMOTOR.NS",
+    "name": "TVS Motor",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "UPL.NS",
+    "name": "UPL",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "VEDL.NS",
+    "name": "Vedanta",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "VOLTAS.NS",
+    "name": "Voltas",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ZOMATO.NS",
+    "name": "Zomato",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ZYDUSLIFE.NS",
+    "name": "Zydus Lifesciences",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "GODREJPROP.NS",
+    "name": "Godrej Properties",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "OBEROIRLTY.NS",
+    "name": "Oberoi Realty",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "PIRAMAL.NS",
+    "name": "Piramal Enterprises",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "BEL.NS",
+    "name": "Bharat Electronics",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "HAL.NS",
+    "name": "HAL",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "IRFC.NS",
+    "name": "IRFC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_NEXT50",
+      "NIFTY100",
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "AARTIIND.NS",
+    "name": "Aarti Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ABCAPITAL.NS",
+    "name": "Aditya Birla Capital",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ABFRL.NS",
+    "name": "Aditya Birla Fashion",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ALKEM.NS",
+    "name": "Alkem Laboratories",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "APOLLOTYRE.NS",
+    "name": "Apollo Tyres",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "ASTRAL.NS",
+    "name": "Astral",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "AUBANK.NS",
+    "name": "AU Small Finance Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "BANDHANBNK.NS",
+    "name": "Bandhan Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "BHARATFORG.NS",
+    "name": "Bharat Forge",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "BIOCON.NS",
+    "name": "Biocon",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "BLUESTARCO.NS",
+    "name": "Blue Star",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "BRIGADE.NS",
+    "name": "Brigade Enterprises",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "CANBK.NS",
+    "name": "Canara Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "CASTROLIND.NS",
+    "name": "Castrol India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "CESC.NS",
+    "name": "CESC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "CGPOWER.NS",
+    "name": "CG Power",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "COCHINSHIP.NS",
+    "name": "Cochin Shipyard",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "COFORGE.NS",
+    "name": "Coforge",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "CONCOR.NS",
+    "name": "Container Corporation",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "CROMPTON.NS",
+    "name": "Crompton Greaves Consumer",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "CUMMINSIND.NS",
+    "name": "Cummins India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "DEEPAKNITRITE.NS",
+    "name": "Deepak Nitrite",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "DIXON.NS",
+    "name": "Dixon Technologies",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "EMAMILTD.NS",
+    "name": "Emami",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "EXIDEIND.NS",
+    "name": "Exide Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "FEDERALBNK.NS",
+    "name": "Federal Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "FORTIS.NS",
+    "name": "Fortis Healthcare",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "GLENMARK.NS",
+    "name": "Glenmark Pharma",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "GLAXO.NS",
+    "name": "GSK Pharma",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "GODREJIND.NS",
+    "name": "Godrej Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "HINDPETRO.NS",
+    "name": "HPCL",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "IDFCFIRSTB.NS",
+    "name": "IDFC First Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_BANK"
+    ]
+  },
+  {
+    "symbol": "IGL.NS",
+    "name": "Indraprastha Gas",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "INDIAMART.NS",
+    "name": "IndiaMART",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "IOC.NS",
+    "name": "Indian Oil",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "IPCA.NS",
+    "name": "IPCA Laboratories",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "JKCEMENT.NS",
+    "name": "JK Cement",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "JSWENERGY.NS",
+    "name": "JSW Energy",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "JUBLFOOD.NS",
+    "name": "Jubilant FoodWorks",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "KALYANKJIL.NS",
+    "name": "Kalyan Jewellers",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "KALPATPOWER.NS",
+    "name": "Kalpataru Power",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "KAYNES.NS",
+    "name": "Kaynes Technology",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "KEC.NS",
+    "name": "KEC International",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "KPITTECH.NS",
+    "name": "KPIT Technologies",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "LALPATHLAB.NS",
+    "name": "Dr Lal PathLabs",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_PHARMA"
+    ]
+  },
+  {
+    "symbol": "LICHSGFIN.NS",
+    "name": "LIC Housing Finance",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "LODHA.NS",
+    "name": "Macrotech Developers",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "LTTS.NS",
+    "name": "L&T Technology Services",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "MANAPPURAM.NS",
+    "name": "Manappuram Finance",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "MAXHEALTH.NS",
+    "name": "Max Healthcare",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "MAZAGON.NS",
+    "name": "Mazagon Dock",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "METROPOLIS.NS",
+    "name": "Metropolis Healthcare",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "MFSL.NS",
+    "name": "Max Financial Services",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "MPHASIS.NS",
+    "name": "Mphasis",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "MRF.NS",
+    "name": "MRF",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_AUTO"
+    ]
+  },
+  {
+    "symbol": "MRPL.NS",
+    "name": "MRPL",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "NATIONALUM.NS",
+    "name": "National Aluminium",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "NAVINFLUOR.NS",
+    "name": "Navin Fluorine",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "NBCC.NS",
+    "name": "NBCC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "NCC.NS",
+    "name": "NCC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "NHPC.NS",
+    "name": "NHPC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "NMDC.NS",
+    "name": "NMDC",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_METAL"
+    ]
+  },
+  {
+    "symbol": "NYKAA.NS",
+    "name": "FSN E-Commerce (Nykaa)",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "OFSS.NS",
+    "name": "Oracle Financial Services",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "OIL.NS",
+    "name": "Oil India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "PAYTM.NS",
+    "name": "One97 Communications",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "PERSISTENT.NS",
+    "name": "Persistent Systems",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_IT"
+    ]
+  },
+  {
+    "symbol": "PFC.NS",
+    "name": "Power Finance Corp",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "PHOENIXLTD.NS",
+    "name": "Phoenix Mills",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "PIIND.NS",
+    "name": "PI Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "POLICYBZR.NS",
+    "name": "PB Fintech",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "PRESTIGE.NS",
+    "name": "Prestige Estates",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "RADICO.NS",
+    "name": "Radico Khaitan",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "RAILTEL.NS",
+    "name": "RailTel Corporation",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "RAINBOW.NS",
+    "name": "Rainbow Children Medicare",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ROUTE.NS",
+    "name": "Route Mobile",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "RVNL.NS",
+    "name": "Rail Vikas Nigam",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SJVN.NS",
+    "name": "SJVN",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SKFINDIA.NS",
+    "name": "SKF India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SOBHA.NS",
+    "name": "Sobha",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "SONACOMS.NS",
+    "name": "Sona BLW Precision",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "STARHEALTH.NS",
+    "name": "Star Health Insurance",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SUPREMEIND.NS",
+    "name": "Supreme Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "SUNTECK.NS",
+    "name": "Sunteck Realty",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_REALTY"
+    ]
+  },
+  {
+    "symbol": "TANLA.NS",
+    "name": "Tanla Platforms",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "TATACOMM.NS",
+    "name": "Tata Communications",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "TATAELXSI.NS",
+    "name": "Tata Elxsi",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "TATAPOWER.NS",
+    "name": "Tata Power",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "TATACHEM.NS",
+    "name": "Tata Chemicals",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "THERMAX.NS",
+    "name": "Thermax",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "TIINDIA.NS",
+    "name": "Tube Investments",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "TORNTPOWER.NS",
+    "name": "Torrent Power",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_ENERGY"
+    ]
+  },
+  {
+    "symbol": "TTKPRESTIG.NS",
+    "name": "TTK Prestige",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "UBL.NS",
+    "name": "United Breweries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "UNIONBANK.NS",
+    "name": "Union Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "VBL.NS",
+    "name": "Varun Beverages",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES",
+      "NIFTY_FMCG"
+    ]
+  },
+  {
+    "symbol": "VGUARD.NS",
+    "name": "V-Guard Industries",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "WHIRLPOOL.NS",
+    "name": "Whirlpool",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "YESBANK.NS",
+    "name": "Yes Bank",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ZEEL.NS",
+    "name": "Zee Entertainment",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY200",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "ABBOTINDIA.NS",
+    "name": "Abbott India",
+    "exchange": "NSE",
+    "type": "equity",
+    "groups": [
+      "NIFTY_PHARMA",
+      "NSE_EQUITIES"
+    ]
+  },
+  {
+    "symbol": "RELIANCE.BO",
+    "name": "Reliance Industries",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "TCS.BO",
+    "name": "TCS",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "HDFCBANK.BO",
+    "name": "HDFC Bank",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "INFY.BO",
+    "name": "Infosys",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "ICICIBANK.BO",
+    "name": "ICICI Bank",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "SBIN.BO",
+    "name": "SBI",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "BHARTIARTL.BO",
+    "name": "Bharti Airtel",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "ITC.BO",
+    "name": "ITC",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "HINDUNILVR.BO",
+    "name": "Hindustan Unilever",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "SUNPHARMA.BO",
+    "name": "Sun Pharma",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "BAJFINANCE.BO",
+    "name": "Bajaj Finance",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "AXISBANK.BO",
+    "name": "Axis Bank",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "KOTAKBANK.BO",
+    "name": "Kotak Bank",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "LT.BO",
+    "name": "L&T",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "WIPRO.BO",
+    "name": "Wipro",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "ULTRACEMCO.BO",
+    "name": "UltraTech Cement",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "ASIANPAINT.BO",
+    "name": "Asian Paints",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "POWERGRID.BO",
+    "name": "Power Grid",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "NTPC.BO",
+    "name": "NTPC",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "TATAMOTORS.BO",
+    "name": "Tata Motors",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "JSWSTEEL.BO",
+    "name": "JSW Steel",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "TITAN.BO",
+    "name": "Titan",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "MARUTI.BO",
+    "name": "Maruti Suzuki",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "DABUR.BO",
+    "name": "Dabur",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "NESTLEIND.BO",
+    "name": "Nestle",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "BRITANNIA.BO",
+    "name": "Britannia",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "M&M.BO",
+    "name": "Mahindra & Mahindra",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "COALINDIA.BO",
+    "name": "Coal India",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "ONGC.BO",
+    "name": "ONGC",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  },
+  {
+    "symbol": "HCLTECH.BO",
+    "name": "HCL Tech",
+    "exchange": "BSE",
+    "type": "equity",
+    "groups": [
+      "BSE_EQUITIES",
+      "BSE_TOP"
+    ]
+  }
+]
